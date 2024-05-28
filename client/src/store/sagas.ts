@@ -6,13 +6,15 @@ import {
   TransactionReceipt,
   BrowserProvider,
   Signer,
+  parseEther,
 } from "ethers";
 
 import apolloClient from "../apollo/client";
 import { Actions } from "../types";
 import { SaveTransaction } from "../queries";
+import { navigate } from "../components/NaiveRouter";
 
-function* sendTransaction() {
+function* sendTransaction({ to, value }: any) {
   const provider = new JsonRpcProvider("http://localhost:8545");
 
   const walletProvider = new BrowserProvider(window.web3.currentProvider);
@@ -28,9 +30,21 @@ function* sendTransaction() {
     return accounts[random].address;
   };
 
+  const randomEth = () => {
+    const min = 0.5;
+    const max = 10;
+    const random = Math.random() * (max - min) + min;
+    return parseEther(random.toString());
+  };
+
+  console.log('# to: ', to);
+  console.log('# value: ', value);
+
   const transaction = {
-    to: randomAddress(),
-    value: 1000000000000000000,
+    to,
+    value,
+    // to: randomAddress(),
+    // value: randomEth(),
   };
 
   try {
@@ -57,7 +71,14 @@ function* sendTransaction() {
       mutation: SaveTransaction,
       variables,
     });
+
+    // Redirect user to the newly created Transaction details page
+    navigate(`/transaction/${receipt.hash}`);
+
+    // Close send transaction form
+    (window as any).HSOverlay.close(document.getElementById('hs-basic-modal'))
   } catch (error) {
+    console.log('# error: ', error);
     //
   }
 }
