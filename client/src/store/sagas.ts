@@ -37,14 +37,9 @@ function* sendTransaction({ to, value }: any) {
     return parseEther(random.toString());
   };
 
-  console.log('# to: ', to);
-  console.log('# value: ', value);
-
   const transaction = {
     to,
     value,
-    // to: randomAddress(),
-    // value: randomEth(),
   };
 
   try {
