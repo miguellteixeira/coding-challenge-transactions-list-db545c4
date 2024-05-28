@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { parseEther } from "ethers";
 
 import { Actions } from "../types";
 
@@ -20,7 +21,7 @@ const SendTransaction: React.FC<SendTransactionProps> = ({ sender }) => {
     dispatch({
       type: Actions.SendTransaction,
       to,
-      value,
+      value: parseEther(value),
     });
   };
 
@@ -101,10 +102,11 @@ const SendTransaction: React.FC<SendTransactionProps> = ({ sender }) => {
                   htmlFor="input-amount"
                   className="block text-sm font-bold my-2"
                 >
-                  Amount:
+                  Amount (ETH):
                 </label>
                 <input
                   type="number"
+                  step=".01"
                   id="input-amount"
                   className="opacity-70 py-3 px-4 block bg-gray-50 border-gray-800 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 w-full"
                   placeholder="Amount"

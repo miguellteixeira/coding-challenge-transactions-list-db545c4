@@ -23,20 +23,6 @@ function* sendTransaction({ to, value }: any) {
 
   const accounts: Array<{ address: string }> = yield provider.listAccounts();
 
-  const randomAddress = () => {
-    const min = 1;
-    const max = 19;
-    const random = Math.round(Math.random() * (max - min) + min);
-    return accounts[random].address;
-  };
-
-  const randomEth = () => {
-    const min = 0.5;
-    const max = 10;
-    const random = Math.random() * (max - min) + min;
-    return parseEther(random.toString());
-  };
-
   const transaction = {
     to,
     value,
